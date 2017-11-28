@@ -20,7 +20,13 @@ function love.load()
 	--set the background color to a nice blue
 	love.graphics.setBackgroundColor(104, 136, 248) 
   	love.window.setMode(650, 650)
-end
+  	--Create Projectile object
+  	objects.Projectile = {}
+  	objects.Projectile.body = love.physics.newBody(world,650/2,650/2,"dynamic")
+  	objects.Projectile.shape = love.physics.newRectangleShape(0,-24,20,20)
+  	objects.Projectile.fixture = love.physics.newFixture(objects.Projectile.body,objects.Projectile.shape)
+  	
+  	end
 
 function love.update(dt)
 	-- body
@@ -32,6 +38,11 @@ function love.update(dt)
   elseif love.keyboard.isDown("left") then --press the left arrow key to push the ball to the left
     objects.Player.body:applyForce(-50, 0)
   end
+  --Destroys the player object if they happen to be in the same spot
+  if objects.Player.body:getY() == objects.Projectile.body:getY() then
+  		objects.Player.body:destroy()
+  		objects.Player.shape:destroy()
+  end
 end
 
 function love.draw()
@@ -42,24 +53,15 @@ function love.draw()
 	--Draws the player object
 	love.graphics.setColor(193,47,14)
 	love.graphics.circle("fill",objects.Player.body:getX(), objects.Player.body:getY(),objects.Player.shape:getRadius())
+	--Draws the projectile object
+	love.graphics.setColor(15,7,3)
+	love.graphics.rectangle("fill",objects.Projectile.body:getX(),objects.Projectile.body:getY(),20,20,90)
+	--Borders
+	love.graphics.setColor(0,0,0)
+	love.graphics.line(-3,-6,-3,-12)
 end
 
 
 
 
---The methods and potential subclasses for the projectiles
---[[
-Projectile = Object:new()
 
-function Projectile:new(body,shape,fixture)
-	setmetatable({},Object)
-	self.body = body
-	self.shape = shape
-	self.fixture = fixture
-	return self
-end
-
-function Projectile:Fall( ... )
-	-- body
-end
-]]
