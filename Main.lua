@@ -21,13 +21,23 @@ function love.load()
 	--set the background color to a nice blue
 	love.graphics.setBackgroundColor(104, 136, 248) 
   	love.window.setMode(650, 650)
-  	--Create Projectile object
+  	--Creates multiple projectiles
   	objects.Projectile = {}
-  	objects.Projectile.body = love.physics.newBody(world,20,5,"dynamic")
-  	objects.Projectile.shape = love.physics.newRectangleShape(50,5,20,20,90)
+  	function objects.Projectile:new()
+  		-- body
+  		x = love.math.random(50,550)
+  	objects.Projectile.body = love.physics.newBody(world,x,5,"dynamic")
+  	objects.Projectile.shape = love.physics.newRectangleShape(20,20)
   	objects.Projectile.fixture = love.physics.newFixture(objects.Projectile.body,objects.Projectile.shape)
   	objects.Projectile.body:setGravityScale(.125)
   	end
+  	i = 1
+  	while( i <=2) do
+  	p = objects.Projectile:new()
+  	
+  	i = i + 1
+  	end
+end
 
 function love.update(dt)
 	-- body
@@ -65,8 +75,3 @@ function love.draw()
 	love.graphics.setColor(0,0,0)
 	love.graphics.line(-3,-6,-3,-12)
 end
-
-
-
-
-
