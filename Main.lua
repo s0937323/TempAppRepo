@@ -18,23 +18,14 @@ function love.load()
 	--set the background color to a nice blue
 	love.graphics.setBackgroundColor(104, 136, 248) 
 
-	--Creates multiple projectiles
-	objects.Projectile = {}
-	function objects.Projectile:new()
-		-- body
-		x = love.math.random(50,550)
-		objects.Projectile.body = love.physics.newBody(GAME_WORLD,x,5,"dynamic")
-		objects.Projectile.shape = love.physics.newRectangleShape(20,20)
-		objects.Projectile.fixture = love.physics.newFixture(objects.Projectile.body,objects.Projectile.shape)
-		objects.Projectile.body:setGravityScale(.125)
-	end
-
-	i = 1
+	PROJECTILE = projectile:new()
+	[[--i = 1
 	while(i <= 2) do
 		p = objects.Projectile:new()
 
 		i = i + 1
 	end
+	--]]
 
 	PLAYER = player:new(10, 10)
 end
@@ -68,8 +59,8 @@ function love.draw()
 	PLAYER:draw()
 
 	--Draws the projectile object
-	love.graphics.setColor(15,7,3)
-	love.graphics.rectangle("fill",objects.Projectile.body:getX(),objects.Projectile.body:getY(),20,20,90)
+	PROJECTILE:draw()
+	
 	--Borders
 	love.graphics.setColor(0,0,0)
 	love.graphics.line(-3,-6,-3,-12)
