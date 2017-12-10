@@ -1,3 +1,5 @@
+io.stdout:setvbuf("no")
+
 class = require 'middleclass'
 require 'player'
 require 'projectile'
@@ -5,7 +7,7 @@ require 'projectile'
 function love.load()
 	-- body
 	love.physics.setMeter(64)
-	GAME_WORLD = love.physics.newWorld(0, 9.81 * 64, true)
+	GAME_WORLD = love.physics.newWorld(0, 9.81 * 16, true)
 
 	--Table containing all the objects
 	objects = {} 
@@ -19,13 +21,6 @@ function love.load()
 	love.graphics.setBackgroundColor(104, 136, 248) 
 
 	PROJECTILE = projectile:new()
-	[[--i = 1
-	while(i <= 2) do
-		p = objects.Projectile:new()
-
-		i = i + 1
-	end
-	--]]
 
 	PLAYER = player:new(10, 10)
 end
@@ -53,7 +48,7 @@ end
 function love.draw()
 	-- body
 	--Draws the ground object
-	love.graphics.setColor(72,160,14)
+	love.graphics.setColor(72, 160, 14)
 	love.graphics.polygon("fill", objects.Ground.body:getWorldPoints(objects.Ground.shape:getPoints()))
 
 	PLAYER:draw()
@@ -62,20 +57,22 @@ function love.draw()
 	PROJECTILE:draw()
 	
 	--Borders
-	love.graphics.setColor(0,0,0)
+	love.graphics.setColor(0, 0, 0)
 	love.graphics.line(-3,-6,-3,-12)
 end
 
 function love.keypressed(key)
 	if key == "right" then --press the right arrow key to push the ball to the right
-		PLAYER:move(50, 0)
+		PLAYER:moveRight(true)
 	elseif key == "left" then --press the left arrow key to push the ball to the left
-		PLAYER:move(-50, 0)
+		PLAYER:moveLeft(true)
 	end
 end
 
 function love.keyreleased(key)
-	if key == "right" or key == "left" then
-		PLAYER:move(0, 0)
+	if key == "right" then
+		PLAYER:moveRight(false)
+	elseif key == "left" then
+		PLAYER:moveLeft(false)
 	end
 end
